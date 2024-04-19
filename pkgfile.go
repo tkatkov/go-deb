@@ -24,6 +24,7 @@ import (
 	"github.com/andrew-d/lzma"
 	"github.com/blakesmith/ar"
 	"github.com/xi2/xz"
+	"github.com/klauspost/compress/zstd"
 )
 
 const (
@@ -162,6 +163,8 @@ func (pfr *PackageFileReader) decompressTar(header ar.Header) *tar.Reader {
 		pfr.checkErr(pfr.pkg.unBzip(&trbuf, gzbuf.Bytes()))
 	} else if strings.HasSuffix(header.Name, ".lzma") {
 		pfr.checkErr(pfr.pkg.unLzma(&trbuf, gzbuf.Bytes()))
+	} else if strings.HasSuffix(header.Name, ".zst") {
+		pfr.checkErr(pfr.pkg.unZst(&trbuf, gzbuf.Bytes()))
 	}
 
 	return tar.NewReader(&trbuf)
