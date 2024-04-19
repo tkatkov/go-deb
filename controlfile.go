@@ -249,6 +249,11 @@ func (cf *ControlFile) OriginalMaintainer() string {
 }
 
 //
+func (cf *ControlFile) Homepage() string {
+	return cf.homepage
+}
+
+//
 func (cf *ControlFile) Depends() []string {
 	return cf.depends
 }
