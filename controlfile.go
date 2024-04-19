@@ -35,7 +35,7 @@ type ControlFile struct {
 	section            string
 	priority           string
 	multiArch          string
-	description        string
+	description      []string
 	summary            string // This is not a standard field of Dpkg and it basically contains only a first line of description.
 	originalMaintainer string
 }
@@ -63,7 +63,7 @@ func in(a string, list []string) bool {
 func (cf *ControlFile) addToField(name string, data string) {
 	switch strings.ToLower(name) {
 	case "description":
-		cf.description += " " + strings.TrimSpace(data)
+		cf.description = append(cf.description, strings.TrimSpace(data))
 	}
 }
 
@@ -164,7 +164,7 @@ func (cf *ControlFile) setStringField(name string, data string) {
 			data += "."
 		}
 		cf.summary = data // The first line is summary. The rest will be added by addToField method.
-		cf.description = data
+		cf.description = append(cf.description, data)
 	case "homepage":
 		cf.homepage = data
 	case "license": // american spelling
@@ -183,48 +183,39 @@ func (cf *ControlFile) Source() string {
 	return cf.src
 }
 
-//
 func (cf *ControlFile) Package() string {
 	return cf.pkg
 }
 
-//
 func (cf *ControlFile) Version() string {
 	return cf.version
 }
 
-//
 func (cf *ControlFile) Architecture() string {
 	return cf.arch
 }
 
-//
 func (cf *ControlFile) Maintainer() string {
 	return cf.maintainer
 }
 
-//
 func (cf *ControlFile) InstalledSize() int {
 	return cf.installedSize
 }
 
-//
 func (cf *ControlFile) Section() string {
 	return cf.section
 }
 
-//
 func (cf *ControlFile) Priority() string {
 	return cf.priority
 }
 
-//
 func (cf *ControlFile) MultiArch() string {
 	return cf.multiArch
 }
 
-//
-func (cf *ControlFile) Description() string {
+func (cf *ControlFile) Description() []string {
 	return cf.description
 }
 
@@ -233,7 +224,6 @@ func (cf *ControlFile) Licence() string {
 	return cf.licence
 }
 
-//
 func (cf *ControlFile) OE() string {
 	return cf.oe
 }
@@ -243,57 +233,46 @@ func (cf *ControlFile) Summary() string {
 	return cf.summary
 }
 
-//
 func (cf *ControlFile) OriginalMaintainer() string {
 	return cf.originalMaintainer
 }
 
-//
 func (cf *ControlFile) Homepage() string {
 	return cf.homepage
 }
 
-//
 func (cf *ControlFile) Depends() []string {
 	return cf.depends
 }
 
-//
 func (cf *ControlFile) Suggests() []string {
 	return cf.suggests
 }
 
-//
 func (cf *ControlFile) Provides() []string {
 	return cf.provides
 }
 
-//
 func (cf *ControlFile) Recommends() []string {
 	return cf.recommends
 }
 
-//
 func (cf *ControlFile) Replaces() []string {
 	return cf.replaces
 }
 
-//
 func (cf *ControlFile) Breaks() []string {
 	return cf.breaks
 }
 
-//
 func (cf *ControlFile) Conflicts() []string {
 	return cf.conflicts
 }
 
-//
 func (cf *ControlFile) Enhances() []string {
 	return cf.enhances
 }
 
-//
 func (cf *ControlFile) Predepends() []string {
 	return cf.predepends
 }
