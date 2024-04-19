@@ -469,6 +469,21 @@ func (c *PackageFile) unXz(writer io.Writer, data []byte) error {
 	return err
 }
 
+// unZst decompresses Zst data
+func (c *PackageFile) unZst(writer io.Writer, data []byte) error {
+	xzread, err := zstd.NewReader(bytes.NewBuffer(data), zstd.WithDecoderConcurrency(1))
+	if err != nil {
+		panic(err)
+	}
+
+	data, err = ioutil.ReadAll(xzread)
+	if err == nil {
+		_, err = writer.Write(data)
+	}
+
+	return err
+}
+
 // unGzip decompresses compressed Gzip data array
 func (c *PackageFile) unGzip(writer io.Writer, data []byte) error {
 	gzread, err := gzip.NewReader(bytes.NewBuffer(data))
